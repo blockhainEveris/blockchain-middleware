@@ -16,4 +16,4 @@ RUN rm -rf /opt/gradle /opt/project/
 
 WORKDIR /opt
 RUN sh -c 'touch app.jar'
-ENTRYPOINT exec java ${JAVA_OPTS} -Dlogging.config=config/logback.xml -jar app.jar
+ENTRYPOINT exec java ${JAVA_OPTS} -jar app.jar
