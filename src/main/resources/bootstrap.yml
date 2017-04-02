@@ -1,0 +1,11 @@
+spring:
+  application:
+    name: blockchain-middleware
+  profiles:
+    active: dperis
+  cloud:
+    config:
+      uri: http://127.0.0.1:8888/blockchain-middleware-configserver/
+      failFast: true
+      user: user
+      password: password
