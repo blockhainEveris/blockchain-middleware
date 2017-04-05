@@ -14,7 +14,7 @@
 	<appender name="FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
 		<file>logs/app.log</file>
 		<rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
-			<fileNamePattern>logs/app.%d{yyyy-MM-dd}.log</fileNamePattern>
+			<fileNamePattern>logs/app.%d{yyyy-MM-dd}.log</fileNamePattern>wire
 			<maxHistory>7</maxHistory>
 		</rollingPolicy>
 		<encoder>
@@ -26,7 +26,11 @@
 		<appender-ref ref="FILE"/>
 	</logger>
 
-	<root level="DEBUG">
+	<logger name="org.apache.http" level="DEBUG">
+		<appender-ref ref="FILE"/>
+	</logger>
+
+	<root level="INFO">
 		<appender-ref ref="CONSOLE"/>
 		<appender-ref ref="FILE"/>
 	</root>

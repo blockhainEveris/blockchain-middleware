@@ -1,6 +1,5 @@
-package com.everis.blockchain.message.input;
+package com.everis.blockchain.message.registrar;
 
-import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 
@@ -10,6 +9,5 @@ public class RegisterInput {
 
     private String enrollId;
     private String enrollSecret;
-
 
 }

@@ -1,0 +1,131 @@
+{
+	"variables": [],
+	"info": {
+		"name": "blockchain-middleware",
+		"_postman_id": "ab6466f3-98f2-6c25-4e97-7c3595cf5bf4",
+		"description": "",
+		"schema": "https://schema.getpostman.com/json/collection/v2.0.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "LOGIN",
+			"request": {
+				"url": "http://localhost:8080/api/v1/admin/blockchain/login",
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "[]\n"
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "DEPLOY_CHAIN",
+			"request": {
+				"url": "http://localhost:8080/api/v1/admin/blockchain/chaincode",
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "[]\n"
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "ADDVOTING",
+			"request": {
+				"url": "http://localhost:8080/api/v1/admin/blockchain/addvoting",
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"description\": \"Iniciativas 2019\",\n  \"votingDeadlineInMinutes\": 22,\n  \"options\":[\"1\",\"2\",\"3\"]\n}"
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "VOTE",
+			"request": {
+				"url": "http://localhost:8080/api/v1/apps/blockchain/vote",
+				"method": "PUT",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"votingId\": 23,\n  \"optionId\": 13,\n  \"justification\": \"1123123\",\n  \"voter\": {\n    \"id\": \"12\",\n    \"name\": \"NAME\",\n    \"channel\": \"CHANEL\",\n    \"category\": \"CAT\",\n    \"office\": \"OFFICE\"\n  }\n}"
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "QUERY",
+			"request": {
+				"url": "http://localhost:8080/api/v1/apps/blockchain/query",
+				"method": "GET",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "[]\n"
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "UPDATE",
+			"request": {
+				"url": "http://localhost:8080/api/v1/apps/blockchain/update",
+				"method": "PUT",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "[]\n"
+				},
+				"description": ""
+			},
+			"response": []
+		}
+	]
+}
