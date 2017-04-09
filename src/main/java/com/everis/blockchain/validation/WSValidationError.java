@@ -4,28 +4,40 @@ import java.io.Serializable;
 
 /**
  * Validation error model for Webservice layer.
+ *
  * @author everis
  * @since 1.7
  */
 public class WSValidationError implements Serializable {
 
-    /** Serial version UID. */
+    /**
+     * Serial version UID.
+     */
     private static final long serialVersionUID = 1L;
 
-    /** Type. */
+    /**
+     * Type.
+     */
     private String type;
 
-    /** Object. */
+    /**
+     * Object.
+     */
     private String object;
 
-    /** details. */
+    /**
+     * details.
+     */
     private String details;
 
-    /** Description. */
+    /**
+     * Description.
+     */
     private String description;
 
     /**
      * Gets the type.
+     *
      * @return the type
      */
     public String getType() {
@@ -34,6 +46,7 @@ public class WSValidationError implements Serializable {
 
     /**
      * Sets the type.
+     *
      * @param type the new type
      */
     public void setType(final String typeValue) {
@@ -42,6 +55,7 @@ public class WSValidationError implements Serializable {
 
     /**
      * Gets the object.
+     *
      * @return the object
      */
     public String getObject() {
@@ -50,6 +64,7 @@ public class WSValidationError implements Serializable {
 
     /**
      * Sets the object.
+     *
      * @param object the new object
      */
     public void setObject(final String objectValue) {
@@ -58,6 +73,7 @@ public class WSValidationError implements Serializable {
 
     /**
      * Gets the details.
+     *
      * @return the details
      */
     public String getDetails() {
@@ -66,6 +82,7 @@ public class WSValidationError implements Serializable {
 
     /**
      * Sets the details.
+     *
      * @param details the new details
      */
     public void setDetails(final String detailsValue) {
@@ -74,6 +91,7 @@ public class WSValidationError implements Serializable {
 
     /**
      * Gets the description.
+     *
      * @return the description
      */
     public String getDescription() {
@@ -82,6 +100,7 @@ public class WSValidationError implements Serializable {
 
     /**
      * Sets the description.
+     *
      * @param description the new description
      */
     public void setDescription(final String descriptionValue) {

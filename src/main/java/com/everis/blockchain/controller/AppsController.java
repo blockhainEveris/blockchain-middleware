@@ -9,7 +9,6 @@ import com.everis.blockchain.message.basic.Init;
 import com.everis.blockchain.message.basic.Result;
 import com.everis.blockchain.message.voting.AllVotings;
 import com.everis.blockchain.message.voting.Voting;
-import com.everis.blockchain.message.voting.input.AddVotingInput;
 import com.everis.blockchain.message.voting.input.VoteInput;
 import com.everis.blockchain.utils.MessageHelper;
 import com.everis.blockchain.validation.ValidationHelper;
@@ -33,23 +32,27 @@ public class AppsController extends BaseController {
         if (errors.getErrorCount() > 0) {
             throw new BlockChainValidationException(errors);
         }
-        BluemixUser bluemixUser = bluemixData.getNodeUsers().get(0);
-        String peerUri = bluemixData.getPeers().get(0) + "/chaincode";
-        log.info("Call Method invoke in " + peerUri);
+        BluemixUser bluemixUser = bluemixData.getRandomUser();
+        String peerUri = bluemixUser.getPeer() + "/chaincode";
+        log.info("Call Method invoke in " + bluemixUser.getPeer());
         final int randomId = (int) System.currentTimeMillis();
-        Init init = MessageHelper.prepareVoteMessage(codeChain, params, bluemixUser.getEnrollId());
+        Init init = MessageHelper.prepareVoteMessage(getCodeChain(), params, bluemixUser.getEnrollId());
         ResponseEntity<Init> response = restTemplate.postForEntity(peerUri, init, Init.class);
         response.getBody().getResult().setId(randomId);
         return response.getBody().getResult();
     }
 
     @RequestMapping(method = RequestMethod.GET, value = BlockChainConstants.ENDPOINT_APPS_QUERY_VOTING)
-    public Result query(@PathVariable final int votingId) throws Exception {
+    public Result query(@PathVariable final int votingId) throws BlockChainException {
+        Errors errors = ValidationHelper.validate(validator, votingId);
+        if (errors.getErrorCount() > 0) {
+            throw new BlockChainValidationException(errors);
+        }
         BluemixUser bluemixUser = bluemixData.getRandomUser();
         String peerUri = bluemixUser.getPeer() + "/chaincode";
         log.info("Call Method chaincode in " + bluemixUser.getPeer());
         final int randomId = (int) System.currentTimeMillis();
-        Init init = MessageHelper.prepareQueryVotingMessage(codeChain, bluemixUser.getEnrollId(), randomId, votingId);
+        Init init = MessageHelper.prepareQueryVotingMessage(getCodeChain(), bluemixUser.getEnrollId(), randomId, votingId);
         ResponseEntity<Init> response = restTemplate.postForEntity(peerUri, init, Init.class);
         ObjectMapper mapper = new ObjectMapper();
 
@@ -65,14 +68,12 @@ public class AppsController extends BaseController {
 
     @RequestMapping(method = RequestMethod.GET, value = BlockChainConstants.ENDPOINT_APPS_QUERY)
     public Result query() throws Exception {
-
-        BluemixUser bluemixUser = bluemixData.getNodeUsers().get(0);
-
-        String peerUri = bluemixData.getPeers().get(0) + "/chaincode";
-        log.info("Call Method invoke in " + peerUri);
+        BluemixUser bluemixUser = bluemixData.getRandomUser();
+        String peerUri = bluemixUser.getPeer() + "/chaincode";
+        log.info("Call Method invoke in " + bluemixUser.getPeer());
 
         final int randomId = (int) System.currentTimeMillis();
-        Init init = MessageHelper.prepareQueryMessage(codeChain, bluemixUser.getEnrollId(), randomId);
+        Init init = MessageHelper.prepareQueryMessage(getCodeChain(), bluemixUser.getEnrollId(), randomId);
         ResponseEntity<Init> response = restTemplate.postForEntity(peerUri, init, Init.class);
 
         ObjectMapper mapper = new ObjectMapper();
@@ -83,8 +84,6 @@ public class AppsController extends BaseController {
         return response.getBody().getResult();
 
     }
-
-
 
 
 }

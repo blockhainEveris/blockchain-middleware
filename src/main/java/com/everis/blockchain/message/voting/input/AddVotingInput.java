@@ -14,13 +14,22 @@ import java.util.List;
 @AllArgsConstructor
 public class AddVotingInput {
 
+    private AddVotingInput() {
+    }
+
+    public static final int MIN_DESC = 5;
+    public static final int MAX_DESC = 255;
+
+    public static final int MIN_MINUTES = 3;
+    public static final int MAX_MINUTES = 3600;
+
     @NotNull
-    @Size(min = 5, max = 255)
+    @Size(min = MIN_DESC, max = MAX_DESC)
     private String description;
 
     @NotNull
-    @Min(3)
-    @Max(3600)
+    @Min(MIN_MINUTES)
+    @Max(MAX_MINUTES)
     private int votingDeadlineInMinutes;
 
     @Valid

@@ -13,6 +13,9 @@ import java.util.List;
 
 public class MessageHelperBase {
 
+    public MessageHelperBase() {
+    }
+
     private static final String JSON_RPC = "2.0";
 
     private static final String QUERY_METHOD = "query";
@@ -29,7 +32,7 @@ public class MessageHelperBase {
 
     private static final String DEPLOY_METHOD = "deploy";
     private static final String DEPLOY_FUNCTION = "init";
-    private static final List<String> DEPLOY_ARGS = Arrays.asList("909");
+    private static final List<String> DEPLOY_ARGS = Arrays.asList("9091");
 
     private static final String INVOKE_METHOD = "invoke";
     private static final String INVOKE_FUNCTION_ADDVOTING = "add_voting";
@@ -109,9 +112,9 @@ public class MessageHelperBase {
     }
 
     protected static CtorMsg prepareCtorMsgQueryVoting(final int votingId) {
-        final List<String> QUERY_ARGS_LIST = Arrays.asList(String.valueOf(votingId));
+        final List<String> list = Arrays.asList(String.valueOf(votingId));
         CtorMsg msg = new CtorMsg();
-        msg.setArgs(QUERY_ARGS_LIST);
+        msg.setArgs(list);
         msg.setFunction(QUERY_VOTING_FUNCTION);
         return msg;
     }

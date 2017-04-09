@@ -5,15 +5,20 @@ import java.util.List;
 
 /**
  * Validation error response model for Webservice layer.
+ *
  * @author friosnar
  * @since 1.7
  */
 public class WSValidationErrorResponse extends WSErrorResponse {
 
-    /** Serial version UID. */
+    /**
+     * Serial version UID.
+     */
     private static final long serialVersionUID = 1L;
 
-    /** The error_fields. */
+    /**
+     * The error_fields.
+     */
     private List<WSValidationError> errorFields = new ArrayList<>();
 
     /**
@@ -28,8 +33,7 @@ public class WSValidationErrorResponse extends WSErrorResponse {
     /**
      * Sets the errorFields.
      *
-     * @param errorFields
-     *          the new errorFields
+     * @param errorFields the new errorFields
      */
     public void setErrorFields(final List<WSValidationError> errorFieldsValue) {
         this.errorFields = errorFieldsValue;

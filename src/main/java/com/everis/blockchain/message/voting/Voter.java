@@ -1,96 +1,45 @@
 
 package com.everis.blockchain.message.voting;
 
-import java.util.HashMap;
-import java.util.Map;
-import com.fasterxml.jackson.annotation.JsonAnyGetter;
-import com.fasterxml.jackson.annotation.JsonAnySetter;
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.everis.blockchain.constants.BlockChainConstants;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
+import lombok.Data;
+
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
-@JsonPropertyOrder({
-    "id",
-    "name",
-    "channel",
-    "category",
-    "office"
-})
+@JsonPropertyOrder({"id", "name", "channel", "category", "office"})
+@Data
 public class Voter {
 
+    public static final int MIN = 2;
+    public static final int MAX = 255;
+
     @JsonProperty("id")
+    @NotNull
+    @Size(min = 1, max = Integer.MAX_VALUE)
     private String id;
+
+    @NotNull
+    @Size(min = MIN, max = MAX)
     @JsonProperty("name")
     private String name;
+
+    @NotNull
     @JsonProperty("channel")
+    @Size(min = 0, max = MAX)
     private String channel;
-    @JsonProperty("category")
-    private String category;
-    @JsonProperty("office")
-    private String office;
-    @JsonIgnore
-    private Map<String, Object> additionalProperties = new HashMap<String, Object>();
-
-    @JsonProperty("id")
-    public String getId() {
-        return id;
-    }
-
-    @JsonProperty("id")
-    public void setId(String id) {
-        this.id = id;
-    }
-
-    @JsonProperty("name")
-    public String getName() {
-        return name;
-    }
-
-    @JsonProperty("name")
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    @JsonProperty("channel")
-    public String getChannel() {
-        return channel;
-    }
-
-    @JsonProperty("channel")
-    public void setChannel(String channel) {
-        this.channel = channel;
-    }
 
     @JsonProperty("category")
-    public String getCategory() {
-        return category;
-    }
-
-    @JsonProperty("category")
-    public void setCategory(String category) {
-        this.category = category;
-    }
+    @Size(min = 0, max = MAX)
+    private String category = BlockChainConstants.NOT_APPLY;
 
     @JsonProperty("office")
-    public String getOffice() {
-        return office;
-    }
+    @Size(min = 0, max = MAX)
+    private String office = BlockChainConstants.NOT_APPLY;
 
-    @JsonProperty("office")
-    public void setOffice(String office) {
-        this.office = office;
-    }
-
-    @JsonAnyGetter
-    public Map<String, Object> getAdditionalProperties() {
-        return this.additionalProperties;
-    }
-
-    @JsonAnySetter
-    public void setAdditionalProperty(String name, Object value) {
-        this.additionalProperties.put(name, value);
-    }
 
 }

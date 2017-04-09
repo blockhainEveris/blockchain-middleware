@@ -32,8 +32,8 @@ dependencyManagement {
 }
 
 ext.deps = [
-        springfoxVersion       : '2.6.1',
-        restAssuredVersion     : '3.0.2'
+        springfoxVersion  : '2.6.1',
+        restAssuredVersion: '3.0.2'
 ]
 
 dependencies {
@@ -55,9 +55,9 @@ dependencies {
     compileOnly('org.projectlombok:lombok')
 
     /* Spring Boot Admin*/
-    compile group: 'de.codecentric', name: 'spring-boot-admin-starter-client', version: '1.4.6'
-    compile group: 'de.codecentric', name: 'spring-boot-admin-server', version: '1.4.6'
-    compile group: 'de.codecentric', name: 'spring-boot-admin-server-ui', version: '1.4.6'
+    //compile group: 'de.codecentric', name: 'spring-boot-admin-starter-client', version: '1.4.6'
+    //compile group: 'de.codecentric', name: 'spring-boot-admin-server', version: '1.4.6'
+    //compile group: 'de.codecentric', name: 'spring-boot-admin-server-ui', version: '1.4.6'
 
     /* TESTING */
     testCompile('org.springframework.boot:spring-boot-starter-test')

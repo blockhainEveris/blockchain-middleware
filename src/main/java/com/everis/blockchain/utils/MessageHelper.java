@@ -5,8 +5,6 @@ import com.everis.blockchain.message.voting.input.AddVotingInput;
 import com.everis.blockchain.message.voting.input.VoteInput;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.extern.slf4j.Slf4j;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 @Slf4j
 public class MessageHelper extends MessageHelperBase {
@@ -22,8 +20,8 @@ public class MessageHelper extends MessageHelperBase {
         }
     }
 
-    public static Init prepareDeployChain(final String path, final String username, final int randomId) {
-        Init init = prepareInitDeploy(username, randomId);
+    public static Init prepareDeployChain(final String path, final String username) {
+        Init init = prepareInitDeploy(username, 1);
         init.getParams().setChaincodeID(prepareChainCodePath(path));
         init.getParams().setCtorMsg(prepareCtorMsgDeploy());
         log(init);

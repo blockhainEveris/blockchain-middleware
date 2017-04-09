@@ -5,4 +5,9 @@
 
 <suppressions>
 
+    <suppress files="BluemixCredentials.java" checks="."/>
+    <suppress files="BluemixData.java" checks="."/>
+    <suppress files="BaseController.java" checks="."/>
+
+
 </suppressions>

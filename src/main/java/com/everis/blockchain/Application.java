@@ -4,7 +4,6 @@ import com.everis.blockchain.bluemix.BluemixCredentials;
 import com.everis.blockchain.bluemix.BluemixData;
 import com.everis.blockchain.constants.BlockChainConstants;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import de.codecentric.boot.admin.config.EnableAdminServer;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
@@ -22,11 +21,12 @@ import java.util.Properties;
 @EnableAutoConfiguration
 @SpringBootApplication
 @ComponentScan(basePackages = {"com.everis.blockchain.*"})
-@EnableAdminServer
 @Slf4j
 public class Application {
 
-    public static void main(String[] args) {
+    private static final int TIMEOUT = 60000;
+
+    public static void main(final String[] args) {
         //setEverisProxy();
         SpringApplication.run(Application.class, args);
     }
@@ -46,8 +46,8 @@ public class Application {
     public RestTemplate restTemplateBasic() {
         RestTemplate restTemplate = new RestTemplate();
         HttpComponentsClientHttpRequestFactory factory = new HttpComponentsClientHttpRequestFactory();
-        factory.setReadTimeout(10000);
-        factory.setConnectTimeout(10000);
+        factory.setReadTimeout(TIMEOUT);
+        factory.setConnectTimeout(TIMEOUT);
         restTemplate.setRequestFactory(factory);
         return restTemplate;
     }
@@ -56,7 +56,7 @@ public class Application {
     public BluemixData blueMixCredentials() throws Exception {
         ObjectMapper mapper = new ObjectMapper();
         InputStream is = Application.class.getResourceAsStream("/credentials.json");
-        return new   BluemixData(mapper.readValue(is, BluemixCredentials.class));
+        return new BluemixData(mapper.readValue(is, BluemixCredentials.class));
     }
 
 }

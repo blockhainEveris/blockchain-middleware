@@ -3,9 +3,9 @@ spring:
     name: blockchain-middleware
   profiles:
     active: dperis
-  #cloud:
-  # config:
-  #  uri: https://blockchain-middleware-config.herokuapp.com/blockchain-middleware-configserver/
-  #  failFast: true
-  #  user: user
-  #  password: password
+  cloud:
+   config:
+    uri: https://blockchain-middleware-config.herokuapp.com/blockchain-middleware-configserver/
+    failFast: true
+    user: user
+    password: password
