@@ -2,79 +2,113 @@ package com.everis.blockchain.controller;
 
 import com.everis.blockchain.bluemix.BluemixData;
 import com.everis.blockchain.bluemix.BluemixUser;
+import com.everis.blockchain.constants.BlockChainConstants;
 import com.everis.blockchain.core.MicroserviceController;
-import com.everis.blockchain.utils.MessageHelper;
+import com.everis.blockchain.exceptions.BlockChainException;
+import com.everis.blockchain.exceptions.BlockChainValidationException;
 import com.everis.blockchain.message.basic.Init;
 import com.everis.blockchain.message.basic.Result;
 import com.everis.blockchain.message.registrar.RegisterInput;
 import com.everis.blockchain.message.registrar.RegisterOutput;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import com.everis.blockchain.message.voting.input.AddVotingInput;
+import com.everis.blockchain.utils.MessageHelper;
+import com.everis.blockchain.validation.ValidationHelper;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.Errors;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.client.RestClientException;
 
-import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Map;
 
 @MicroserviceController
-@RequestMapping(value = "/api/v1/admin/blockchain/*")
+@RequestMapping(value = BlockChainConstants.ENDPOINT_ADMIN + "/*")
+@Slf4j
 public class AdminController extends BaseController {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(AdminController.class);
-
-    private String codeChain = "a35d99ec889abc2b1b92fe5e3abbdcdbc5f1ad2da2c9dc55fb325485f90b25f06692f1c55b6e84f2e089f91c2eddc1339537b7f82ec6bd2f9896d21f9df2fe7b";
-
-    @RequestMapping(method = RequestMethod.GET, value = "/bluemix")
-    public BluemixData getBluemixData() throws Exception {
-        return bluemixData;
-    }
-
-    @RequestMapping(method = RequestMethod.DELETE, value = "/unregister")
-    public List<RegisterOutput> deleteRegister() throws Exception {
-        List<RegisterOutput> outputList = new LinkedList<>();
-        for (String baseUri : bluemixData.getPeers()) {
-            RegisterOutput output = new RegisterOutput();
-            try {
-                final String uri = baseUri + "/registrar/{user}";
-                Map<String, String> params = new HashMap<String, String>();
-                params.put("user", bluemixData.getAdminUser().getEnrollId());
-                restTemplate.delete(uri, params);
-                output.setOk(uri);
-
-            } catch (RestClientException e) {
-                output.setError(e.getMessage());
-                output.setOk(baseUri);
-            }
-            outputList.add(output);
+    @RequestMapping(method = RequestMethod.GET, value = BlockChainConstants.ENDPOINT_ADMIN_INFO)
+    public List<BluemixUser> getBluemixData() throws BlockChainException {
+        try {
+            return bluemixData.getNodeUsers();
+        } catch (Exception e) {
+            throw new BlockChainException(e);
         }
-        return outputList;
     }
 
-    @RequestMapping(method = RequestMethod.POST, value = "/login")
-    public RegisterOutput registrar() throws Exception {
-        String peerUri = bluemixData.getPeers().get(0) + "/registrar";
-        LOGGER.info("Call Method registrar in " + peerUri);
-
-        BluemixUser adminUser = bluemixData.getAdminUser();
-        RegisterInput input = new RegisterInput(adminUser.getEnrollId(), adminUser.getEnrollSecret());
-        ResponseEntity<RegisterOutput> response = restTemplate.postForEntity(peerUri, input, RegisterOutput.class);
-        LOGGER.info(response.getBody().toString());
-        return response.getBody();
+    @RequestMapping(method = RequestMethod.POST, value = BlockChainConstants.ENDPOINT_ADMIN_LOGIN)
+    public List<RegisterOutput> registrar() throws BlockChainException {
+        try {
+            List<RegisterOutput> list = new LinkedList<>();
+            for (BluemixUser nodeUser : bluemixData.getNodeUsers()) {
+                String peerUri = nodeUser.getPeer() + "/registrar";
+                log.info("Call Method registrar in " + peerUri);
+                RegisterInput input = new RegisterInput(nodeUser.getEnrollId(), nodeUser.getEnrollSecret());
+                ResponseEntity<RegisterOutput> response = restTemplate.postForEntity(peerUri, input, RegisterOutput.class);
+                log.info(response.getBody().toString());
+                response.getBody().setNode(nodeUser.getPeer());
+                list.add(response.getBody());
+            }
+            return list;
+        } catch (Exception e) {
+            throw new BlockChainException(e);
+        }
     }
 
-    @RequestMapping(method = RequestMethod.POST, value = "/chaincode")
-    public Result init() throws Exception {
+    @RequestMapping(method = RequestMethod.POST, value = BlockChainConstants.ENDPOINT_ADMIN_CHAIN)
+    public Result init() throws BlockChainException {
+        try {
+            BluemixUser bluemixUser = bluemixData.getRandomUser();
+            String peerUri = bluemixUser.getPeer() + "/chaincode";
+            log.info("Call Method chaincode in " + bluemixUser.getPeer());
+            final int randomId = (int) System.currentTimeMillis();
+            Init init = MessageHelper.prepareDeployChain(BlockChainConstants.BLUEMIX_CHAINCODE_URL, bluemixUser.getEnrollId(), randomId);
+            ResponseEntity<Init> response = restTemplate.postForEntity(peerUri, init, Init.class);
+            response.getBody().getResult().setId(randomId);
+            return response.getBody().getResult();
+        } catch (Exception e) {
+            throw new BlockChainException(e);
+        }
+    }
+
+
+    @RequestMapping(method = RequestMethod.POST, value = BlockChainConstants.ENDPOINT_APPS_ADDVOTING)
+    public Result addVoting(@RequestBody final AddVotingInput params) throws Exception {
+        Errors errors = ValidationHelper.validate(validator, params);
+        if (errors.getErrorCount() > 0) {
+            throw new BlockChainValidationException(errors);
+        }
+        BluemixUser bluemixUser = bluemixData.getNodeUsers().get(0);
         String peerUri = bluemixData.getPeers().get(0) + "/chaincode";
-        LOGGER.info("Call Method registrar in " + peerUri);
-        String path = "https://github.com/osamso/learn-chaincode/start";
+        log.info("Call Method invoke in " + peerUri);
         final int randomId = (int) System.currentTimeMillis();
-        Init init = MessageHelper.prepareDeployChain(path, bluemixData.getAdminUser().getEnrollId(), randomId);
+        Init init = MessageHelper.prepareAddVotingMessage(codeChain, params, bluemixUser.getEnrollId(), randomId);
         ResponseEntity<Init> response = restTemplate.postForEntity(peerUri, init, Init.class);
         response.getBody().getResult().setId(randomId);
+        return response.getBody().getResult();
+    }
+
+    @RequestMapping(method = RequestMethod.PUT, value = BlockChainConstants.ENDPOINT_APPS_UPDATE)
+    public Result updateVotingStatus() throws Exception {
+        BluemixUser bluemixUser = bluemixData.getNodeUsers().get(0);
+        String peerUri = bluemixData.getPeers().get(0) + "/chaincode";
+        log.info("Call Method invoke in " + peerUri);
+        final int randomId = (int) System.currentTimeMillis();
+        Init init = MessageHelper.prepareUpdateVotingsStatusMessage(codeChain, bluemixUser.getEnrollId(), randomId);
+        ResponseEntity<Init> response = restTemplate.postForEntity(peerUri, init, Init.class);
+        return response.getBody().getResult();
+    }
+
+    @RequestMapping(method = RequestMethod.PUT, value = BlockChainConstants.ENDPOINT_APPS_UPDATE_VOTING)
+    public Result updateVotingStatus(@PathVariable final int votingId) throws Exception {
+        BluemixUser bluemixUser = bluemixData.getNodeUsers().get(0);
+        String peerUri = bluemixData.getPeers().get(0) + "/chaincode";
+        log.info("Call Method invoke in " + peerUri);
+        final int randomId = (int) System.currentTimeMillis();
+        Init init = MessageHelper.prepareUpdateVotingStatusMessage(codeChain, bluemixUser.getEnrollId(), randomId, votingId);
+        ResponseEntity<Init> response = restTemplate.postForEntity(peerUri, init, Init.class);
         return response.getBody().getResult();
     }
 

@@ -16,12 +16,16 @@ public class MessageHelperBase {
     private static final String JSON_RPC = "2.0";
 
     private static final String QUERY_METHOD = "query";
-    private static final String QUERY_FUNCTION = "read";
+    private static final String QUERY_FUNCTION = "get_votings";
     private static final String QUERY_ARGS = "_votingindex";
     private static final List<String> QUERY_ARGS_LIST = Arrays.asList(QUERY_ARGS);
 
+    private static final String QUERY_VOTING_METHOD = "query";
+    private static final String QUERY_VOTING_FUNCTION = "get_voting";
+
     private static final String UPDATE_FUNCTION = "update_votings_status";
     private static final List<String> UPDATE_ARGS_LIST = Arrays.asList(QUERY_ARGS);
+    private static final String UPDATE_VOTING_FUNCTION = "update_voting_status";
 
     private static final String DEPLOY_METHOD = "deploy";
     private static final String DEPLOY_FUNCTION = "init";
@@ -104,10 +108,26 @@ public class MessageHelperBase {
         return msg;
     }
 
+    protected static CtorMsg prepareCtorMsgQueryVoting(final int votingId) {
+        final List<String> QUERY_ARGS_LIST = Arrays.asList(String.valueOf(votingId));
+        CtorMsg msg = new CtorMsg();
+        msg.setArgs(QUERY_ARGS_LIST);
+        msg.setFunction(QUERY_VOTING_FUNCTION);
+        return msg;
+    }
+
     protected static CtorMsg prepareCtorMsgUpdate() {
         CtorMsg msg = new CtorMsg();
         msg.setArgs(UPDATE_ARGS_LIST);
         msg.setFunction(UPDATE_FUNCTION);
+        return msg;
+    }
+
+    protected static CtorMsg prepareCtorMsgUpdateVoting(final int votingId) {
+        CtorMsg msg = new CtorMsg();
+        final List<String> args = Arrays.asList(String.valueOf(votingId));
+        msg.setArgs(args);
+        msg.setFunction(UPDATE_VOTING_FUNCTION);
         return msg;
     }
 

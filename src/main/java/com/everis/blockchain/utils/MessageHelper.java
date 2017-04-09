@@ -4,20 +4,21 @@ import com.everis.blockchain.message.basic.Init;
 import com.everis.blockchain.message.voting.input.AddVotingInput;
 import com.everis.blockchain.message.voting.input.VoteInput;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import lombok.extern.slf4j.Slf4j;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+@Slf4j
 public class MessageHelper extends MessageHelperBase {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(MessageHelper.class);
     private static final int DEFAULT_ID = 0;
 
     private static void log(final Object object) {
         ObjectMapper mapper = new ObjectMapper();
         try {
-            LOGGER.info(mapper.writerWithDefaultPrettyPrinter().writeValueAsString(object));
+            log.info(mapper.writerWithDefaultPrettyPrinter().writeValueAsString(object));
         } catch (Exception e) {
-            LOGGER.warn(e.getMessage());
+            log.warn(e.getMessage());
         }
     }
 
@@ -45,10 +46,26 @@ public class MessageHelper extends MessageHelperBase {
         return init;
     }
 
-    public static Init prepareUpdateVotingStatusMessage(final String chainCode, final String username, final int randomId) {
+    public static Init prepareQueryVotingMessage(final String chainCode, final String username, final int randomId, final int votingId) {
+        Init init = prepareInitQuery(username, randomId);
+        init.getParams().setChaincodeID(prepareChaincodeName(chainCode));
+        init.getParams().setCtorMsg(prepareCtorMsgQueryVoting(votingId));
+        log(init);
+        return init;
+    }
+
+    public static Init prepareUpdateVotingsStatusMessage(final String chainCode, final String username, final int randomId) {
         Init init = prepareInitInvoke(username, randomId);
         init.getParams().setChaincodeID(prepareChaincodeName(chainCode));
         init.getParams().setCtorMsg(prepareCtorMsgUpdate());
+        log(init);
+        return init;
+    }
+
+    public static Init prepareUpdateVotingStatusMessage(final String chainCode, final String username, final int randomId, final int votingId) {
+        Init init = prepareInitInvoke(username, randomId);
+        init.getParams().setChaincodeID(prepareChaincodeName(chainCode));
+        init.getParams().setCtorMsg(prepareCtorMsgUpdateVoting(votingId));
         log(init);
         return init;
     }

@@ -15,4 +15,7 @@ public class RegisterOutput {
 
     @JsonProperty("Error")
     private String error;
+
+    @JsonProperty("node")
+    private String node;
 }

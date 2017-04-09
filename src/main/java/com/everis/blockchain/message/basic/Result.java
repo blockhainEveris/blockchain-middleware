@@ -23,6 +23,9 @@ public class Result {
     @JsonProperty("votings")
     private List<Voting> votings;
 
+    @JsonProperty("voting")
+    private Voting voting;
+
     @JsonProperty("id")
     private Integer id;
 

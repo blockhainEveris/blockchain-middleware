@@ -34,11 +34,6 @@ public class BlockChainExceptionHandler extends ResponseEntityExceptionHandler {
         errorTranslator.load(input);
     }
 
-    /**
-     * @param e       Exception
-     * @param request Web request
-     * @return Handle internal exception
-     */
     @ExceptionHandler(Exception.class)
     public ResponseEntity<Object> handleGenericException(final Exception e, final WebRequest request) {
         LOG.error("Internal server error not controlled", e);
@@ -66,11 +61,7 @@ public class BlockChainExceptionHandler extends ResponseEntityExceptionHandler {
         return handleExceptionInternal(e, errorResponse, headers, HttpStatus.BAD_REQUEST, request);
     }
 
-    /**
-     * @param e       DBEValidationException
-     * @param request WebRequest
-     * @return Internat handle exception
-     */
+
     @ExceptionHandler(BlockChainValidationException.class)
     public ResponseEntity<Object> handleDBEValidationException(final BlockChainValidationException e, final WebRequest request) {
 

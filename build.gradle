@@ -3,20 +3,24 @@ plugins {
 }
 
 apply plugin: 'java'
-apply plugin: 'eclipse'
+apply plugin: 'checkstyle'
 apply plugin: 'org.springframework.boot'
-
 
 sourceCompatibility = 1.8
 targetCompatibility = 1.8
 group = 'com.everis.blockchain'
 version = '0.0.1-SNAPSHOT'
 
-jar {
-    archiveName = 'app.jar'
-}
+jar { archiveName = 'app.jar' }
 
 repositories {
+    maven {
+        url 'https://steps.everis.com/nexus/content/groups/public/'
+        credentials {
+            username 'dperisro'
+            password 'Dp12012017'
+        }
+    }
     maven { url 'https://repo.spring.io/release/' }
     mavenCentral()
 }
@@ -27,20 +31,40 @@ dependencyManagement {
     }
 }
 
+ext.deps = [
+        springfoxVersion       : '2.6.1',
+        restAssuredVersion     : '3.0.2'
+]
+
 dependencies {
-    compile('org.springframework.boot:spring-boot-starter-actuator')
-    compile('org.springframework.boot:spring-boot-starter-web')
+
+    /* SringBoot */
+    compile 'org.springframework.boot:spring-boot-starter-actuator'
+    compile 'org.springframework.boot:spring-boot-starter-web'
     compile 'org.springframework.cloud:spring-cloud-starter-config'
     compile 'org.springframework.cloud:spring-cloud-starter-eureka'
-    compile('org.apache.httpcomponents:httpclient:4.5.3')
 
     /* SWAGGER */
-    compile('io.springfox:springfox-swagger-ui:2.6.1');
-    compile('io.springfox:springfox-swagger2:2.6.1');
-    compile('io.springfox:springfox-data-rest:2.6.1');
+    compile "io.springfox:springfox-swagger-ui:${deps.springfoxVersion}"
+    compile "io.springfox:springfox-swagger2:${deps.springfoxVersion}"
+    compile "io.springfox:springfox-data-rest:${deps.springfoxVersion}"
+
+    /* Others */
+    compile('org.apache.httpcomponents:httpclient:4.5.3')
 
     compileOnly('org.projectlombok:lombok')
 
+    /* Spring Boot Admin*/
+    compile group: 'de.codecentric', name: 'spring-boot-admin-starter-client', version: '1.4.6'
+    compile group: 'de.codecentric', name: 'spring-boot-admin-server', version: '1.4.6'
+    compile group: 'de.codecentric', name: 'spring-boot-admin-server-ui', version: '1.4.6'
+
+    /* TESTING */
     testCompile('org.springframework.boot:spring-boot-starter-test')
     testCompile 'org.springframework.restdocs:spring-restdocs-restassured:1.1.2.RELEASE'
+    testCompile "io.rest-assured:rest-assured:${deps.restAssuredVersion}"
+    testCompile "io.rest-assured:json-path:${deps.restAssuredVersion}"
+    testCompile "io.rest-assured:json-schema-validator:${deps.restAssuredVersion}"
+
+
 }

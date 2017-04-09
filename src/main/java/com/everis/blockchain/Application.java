@@ -2,7 +2,10 @@ package com.everis.blockchain;
 
 import com.everis.blockchain.bluemix.BluemixCredentials;
 import com.everis.blockchain.bluemix.BluemixData;
+import com.everis.blockchain.constants.BlockChainConstants;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import de.codecentric.boot.admin.config.EnableAdminServer;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -19,15 +22,24 @@ import java.util.Properties;
 @EnableAutoConfiguration
 @SpringBootApplication
 @ComponentScan(basePackages = {"com.everis.blockchain.*"})
+@EnableAdminServer
+@Slf4j
 public class Application {
 
     public static void main(String[] args) {
-        /*Properties props = System.getProperties();
-        props.put("http.proxyHost", "10.110.8.42");
-        props.put("http.proxyPort", "8080");
-        props.put("https.proxyHost", "10.110.8.42");
-        props.put("https.proxyPort", "8080");*/
+        //setEverisProxy();
         SpringApplication.run(Application.class, args);
+    }
+
+    private static void setEverisProxy() {
+        if (BlockChainConstants.EVERIS_PROXY) {
+            log.info("setEverisProxy...");
+            Properties props = System.getProperties();
+            props.put("http.proxyHost", BlockChainConstants.EVERIS_PROXY_HOST);
+            props.put("http.proxyPort", BlockChainConstants.EVERIS_PROXY_PORT);
+            props.put("https.proxyHost", BlockChainConstants.EVERIS_PROXY_HOST);
+            props.put("https.proxyPort", BlockChainConstants.EVERIS_PROXY_PORT);
+        }
     }
 
     @Bean
@@ -44,7 +56,7 @@ public class Application {
     public BluemixData blueMixCredentials() throws Exception {
         ObjectMapper mapper = new ObjectMapper();
         InputStream is = Application.class.getResourceAsStream("/credentials.json");
-        return new BluemixData(mapper.readValue(is, BluemixCredentials.class));
+        return new   BluemixData(mapper.readValue(is, BluemixCredentials.class));
     }
 
 }
