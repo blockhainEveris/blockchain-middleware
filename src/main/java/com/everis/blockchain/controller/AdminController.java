@@ -23,6 +23,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
+import java.io.IOException;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -34,7 +35,7 @@ public class AdminController extends BaseController {
     @RequestMapping(method = RequestMethod.POST, value = BlockChainConstants.ENDPOINT_ADMIN_SETCHAINCODE)
     public BluemixData setChainCode(@PathVariable final String chainCodeId) throws BlockChainException {
         try {
-            chainCode.setChainCodeId(chainCodeId);
+            MessageHelper.writeChainCodeTmpFile(chainCodeId);
             return getBluemixData();
         } catch (Exception e) {
             throw new BlockChainException(e);
@@ -82,7 +83,7 @@ public class AdminController extends BaseController {
             Init init = MessageHelper.prepareDeployChain(BlockChainConstants.BLUEMIX_CHAINCODE_URL, bluemixUser.getEnrollId());
             ResponseEntity<Init> response = restTemplate.postForEntity(peerUri, init, Init.class);
             if (response.getStatusCode().is2xxSuccessful()) {
-                chainCode.setChainCodeId(response.getBody().getResult().getMessage().toString());
+                MessageHelper.writeChainCodeTmpFile(response.getBody().getResult().getMessage().toString());
                 return response.getBody().getResult();
             } else {
                 throw new BlockChainDeployChainException("Error in deploy chain: " + response.getBody().toString());

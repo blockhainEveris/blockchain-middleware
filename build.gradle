@@ -61,7 +61,6 @@ dependencies {
 
     /* TESTING */
     testCompile('org.springframework.boot:spring-boot-starter-test')
-    testCompile 'org.springframework.restdocs:spring-restdocs-restassured:1.1.2.RELEASE'
     testCompile "io.rest-assured:rest-assured:${deps.restAssuredVersion}"
     testCompile "io.rest-assured:json-path:${deps.restAssuredVersion}"
     testCompile "io.rest-assured:json-schema-validator:${deps.restAssuredVersion}"

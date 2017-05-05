@@ -4,12 +4,20 @@ import com.everis.blockchain.message.basic.Init;
 import com.everis.blockchain.message.voting.input.AddVotingInput;
 import com.everis.blockchain.message.voting.input.VoteInput;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.google.common.io.Files;
 import lombok.extern.slf4j.Slf4j;
+
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.nio.charset.Charset;
 
 @Slf4j
 public class MessageHelper extends MessageHelperBase {
 
     private static final int DEFAULT_ID = 0;
+    private static final String PATH_TMP = System.getProperty("java.io.tmpdir") + File.separator + "chainCodeId.tmp";
 
     private static void log(final Object object) {
         ObjectMapper mapper = new ObjectMapper();
@@ -76,5 +84,23 @@ public class MessageHelper extends MessageHelperBase {
         return init;
     }
 
+    public static void writeChainCodeTmpFile(final String chainCode) throws IOException {
+        log.info("java.io.tmpdir: " + System.getProperty("java.io.tmpdir"));
+        File tempFile = new File(PATH_TMP);
+        FileWriter fileWriter = new FileWriter(tempFile, false);
+        System.out.println(tempFile.getAbsolutePath());
+        BufferedWriter bw = new BufferedWriter(fileWriter);
+        bw.write(chainCode);
+        bw.close();
+    }
+
+    public static String getChainCodeTmpFile() {
+        try {
+            File tempFile = new File(PATH_TMP);
+            return Files.readFirstLine(tempFile, Charset.defaultCharset());
+        } catch (Exception e) {
+            return "";
+        }
+    }
 
 }

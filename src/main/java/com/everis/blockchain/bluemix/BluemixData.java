@@ -14,8 +14,6 @@ public class BluemixData {
 
     @JsonIgnore
     private BluemixCredentials bluemixCredentials;
-
-
     private String chainCode;
     private List<BluemixUser> nodeUsers = new LinkedList<BluemixUser>();
 
