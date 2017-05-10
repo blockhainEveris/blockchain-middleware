@@ -21,6 +21,7 @@ public class BlockChainConstants {
     public static final String ENDPOINT_APPS_ADDVOTING = "/addvoting";
     public static final String ENDPOINT_APPS_UPDATE = "/update";
     public static final String ENDPOINT_APPS_UPDATE_VOTING = "/update/{votingId}";
+    public static final String ENDPOINT_APPS_CLOSE_VOTING = "/close/{votingId}";
 
     public static final String ENDPOINT_APPS_VOTE = "/vote";
     public static final String BLUEMIX_CHAINCODE_URL = "https://github.com/blockhainEveris/blockchain-chaincode";

@@ -94,13 +94,12 @@ public class MessageHelperBase {
         sb.add(input.getVotingId() + "");
         sb.add(input.getOptionId() + "");
         sb.add(input.getJustification());
-        sb.add(input.getVoter().getId() + "");
+        sb.add(input.getVoter().getSenderId() + "");
         sb.add(input.getVoter().getName());
-        sb.add(input.getVoter().getCategory());
-        sb.add(input.getVoter().getOffice());
         sb.add(input.getVoter().getChannel());
+        sb.add(input.getVoter().getBoteId());
+        sb.add(input.getVoter().getConversationId());
         msg.setArgs(sb);
-
         return msg;
     }
 

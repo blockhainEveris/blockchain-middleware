@@ -18,10 +18,10 @@ public class Voter {
     public static final int MIN = 2;
     public static final int MAX = 255;
 
-    @JsonProperty("id")
+    @JsonProperty("senderid")
     @NotNull
-    @Size(min = 1, max = Integer.MAX_VALUE)
-    private String id;
+    @Size(min = 1, max = MAX)
+    private String senderId;
 
     @NotNull
     @Size(min = MIN, max = MAX)
@@ -33,13 +33,11 @@ public class Voter {
     @Size(min = 0, max = MAX)
     private String channel;
 
-    @JsonProperty("category")
+    @JsonProperty("boteid")
     @Size(min = 0, max = MAX)
-    private String category = BlockChainConstants.NOT_APPLY;
+    private String boteId = BlockChainConstants.NOT_APPLY;
 
-    @JsonProperty("office")
+    @JsonProperty("conversationid")
     @Size(min = 0, max = MAX)
-    private String office = BlockChainConstants.NOT_APPLY;
-
-
+    private String conversationId = BlockChainConstants.NOT_APPLY;
 }

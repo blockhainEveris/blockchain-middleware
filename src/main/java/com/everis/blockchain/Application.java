@@ -13,6 +13,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.client.HttpComponentsClientHttpRequestFactory;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.client.RestTemplate;
 
 import java.io.IOException;
@@ -29,7 +30,7 @@ public class Application {
     private static final int TIMEOUT = 60000;
 
     public static void main(final String[] args) {
-        setEverisProxy();
+        //setEverisProxy();
         SpringApplication.run(Application.class, args);
         log.info("ChainCode: " + MessageHelper.getChainCodeTmpFile());
     }

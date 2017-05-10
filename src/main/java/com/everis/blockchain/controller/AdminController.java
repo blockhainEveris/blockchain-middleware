@@ -103,7 +103,7 @@ public class AdminController extends BaseController {
         BluemixUser bluemixUser = bluemixData.getRandomUser();
         String peerUri = bluemixUser.getPeer() + "/chaincode";
         log.info("Call Method invoke in " + bluemixUser.getPeer());
-        final int randomId = (int) System.currentTimeMillis();
+        final int randomId = MessageHelper.getRamdomAbs();
         Init init = MessageHelper.prepareAddVotingMessage(getCodeChain(), params, bluemixUser.getEnrollId(), randomId);
         ResponseEntity<Init> response = restTemplate.postForEntity(peerUri, init, Init.class);
         response.getBody().getResult().setId(randomId);
@@ -121,8 +121,8 @@ public class AdminController extends BaseController {
         return response.getBody().getResult();
     }
 
-    @RequestMapping(method = RequestMethod.PUT, value = BlockChainConstants.ENDPOINT_APPS_UPDATE_VOTING)
-    public Result updateVotingStatus(@PathVariable final int votingId) throws Exception {
+    @RequestMapping(method = RequestMethod.PUT, value = BlockChainConstants.ENDPOINT_APPS_CLOSE_VOTING)
+    public Result closeVotingStatus(@PathVariable final int votingId) throws Exception {
         BluemixUser bluemixUser = bluemixData.getRandomUser();
         String peerUri = bluemixUser.getPeer() + "/chaincode";
         log.info("Call Method invoke in " + bluemixUser.getPeer());
@@ -132,5 +132,10 @@ public class AdminController extends BaseController {
         return response.getBody().getResult();
     }
 
+    @Deprecated
+    @RequestMapping(method = RequestMethod.PUT, value = BlockChainConstants.ENDPOINT_APPS_UPDATE_VOTING)
+    public Result updateVotingStatus(@PathVariable final int votingId) throws Exception {
+        return closeVotingStatus(votingId);
+    }
 
 }

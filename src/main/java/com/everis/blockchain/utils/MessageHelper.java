@@ -103,4 +103,9 @@ public class MessageHelper extends MessageHelperBase {
         }
     }
 
+    public static int getRamdomAbs() {
+        final int randomId = (int) System.currentTimeMillis();
+        return Math.abs(randomId);
+    }
+
 }
