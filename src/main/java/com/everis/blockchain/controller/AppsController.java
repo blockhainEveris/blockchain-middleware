@@ -8,6 +8,7 @@ import com.everis.blockchain.exceptions.BlockChainValidationException;
 import com.everis.blockchain.message.basic.Init;
 import com.everis.blockchain.message.basic.Result;
 import com.everis.blockchain.message.voting.AllVotings;
+import com.everis.blockchain.message.voting.Voter;
 import com.everis.blockchain.message.voting.Voting;
 import com.everis.blockchain.message.voting.input.VoteInput;
 import com.everis.blockchain.utils.MessageHelper;
@@ -15,6 +16,7 @@ import com.everis.blockchain.validation.ValidationHelper;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
+import org.springframework.util.StringUtils;
 import org.springframework.validation.Errors;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -28,6 +30,17 @@ public class AppsController extends BaseController {
 
     @RequestMapping(method = RequestMethod.PUT, value = BlockChainConstants.ENDPOINT_APPS_VOTE)
     public Result vote(@RequestBody final VoteInput params) throws Exception {
+
+        //TODO: WorkAround Checkpoint2
+        Voter voter = params.getVoter();
+        if(StringUtils.isEmpty(voter.getName())){
+            params.getVoter().setName("Name_"+ System.currentTimeMillis());
+        }
+
+        if(StringUtils.isEmpty(voter.getSenderId())){
+            params.getVoter().setSenderId("senderID_"+ System.currentTimeMillis());
+        }
+
         Errors errors = ValidationHelper.validate(validator, params);
         if (errors.getErrorCount() > 0) {
             throw new BlockChainValidationException(errors);
