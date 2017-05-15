@@ -114,6 +114,9 @@
     </dependencies>
 
     <build>
+        <directory>${project.basedir}/build/libs</directory>
+        <finalName>app</finalName>
+
         <plugins>
 
             <plugin>
