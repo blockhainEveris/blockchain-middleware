@@ -27,13 +27,13 @@ public class BluemixData {
             if (user.getUsername().equalsIgnoreCase("user_type2_0")) {
                 user.setPeer(bluemixCredentials.getPeers().get(0).getApiUrl().replace("http", "https"));
                 nodeUsers.add(user);
-            } else if (user.getUsername().equalsIgnoreCase("user_type2_1")) {
+            /*} else if (user.getUsername().equalsIgnoreCase("user_type2_1")) {
                 user.setPeer(bluemixCredentials.getPeers().get(1).getApiUrl().replace("http", "https"));
                 nodeUsers.add(user);
             } else if (user.getUsername().equalsIgnoreCase("user_type2_2")) {
                 user.setPeer(bluemixCredentials.getPeers().get(2).getApiUrl().replace("http", "https"));
                 nodeUsers.add(user);
-            /*} else if (user.getUsername().equalsIgnoreCase("user_type2_3")) {
+            } else if (user.getUsername().equalsIgnoreCase("user_type2_3")) {
                 user.setPeer(bluemixCredentials.getPeers().get(3).getApiUrl().replace("http", "https"));
                 nodeUsers.add(user);*/
             }
