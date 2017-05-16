@@ -41,9 +41,9 @@ public class BluemixData {
     }
 
     public BluemixUser getRandomUser() {
-        final int max = 3;
+        final int max = 1;
         int random = new Random().nextInt(max);
         log.info("random: " + random);
-        return nodeUsers.get(random);
+        return nodeUsers.get(0);
     }
 }
