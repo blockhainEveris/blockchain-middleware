@@ -38,7 +38,7 @@ public class ElasticAspect {
 
         Settings settings = Settings.builder().put("cluster.name", "docker-cluster").build();
         TransportClient client = new PreBuiltTransportClient(settings)
-                .addTransportAddress(new InetSocketTransportAddress(InetAddress.getByName("iMac-de-iPeris.local"), 9300));
+                .addTransportAddress(new InetSocketTransportAddress(InetAddress.getByName("34.209.32.187"), 9300));
 
         log.info(client.settings().keySet().toString());
 
