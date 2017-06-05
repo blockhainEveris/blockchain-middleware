@@ -36,14 +36,20 @@ ext.deps = [
         restAssuredVersion: '3.0.2'
 ]
 
+ext['elasticsearch.version'] = '5.4.1'
+
+
 dependencies {
 
     /* SringBoot */
     compile 'org.springframework.boot:spring-boot-starter-actuator'
     compile 'org.springframework.boot:spring-boot-starter-web'
+    compile 'org.springframework.boot:spring-boot-starter-aop'
 
     /* Elastic */
-    compile 'org.elasticsearch.client:transport:5.4.0'
+    compile 'org.elasticsearch.client:transport:5.4.1'
+    compile 'org.elasticsearch:elasticsearch:5.4.1'
+    compile 'org.apache.logging.log4j:log4j-to-slf4j:2.8.2'
 
     /* SWAGGER */
     compile "io.springfox:springfox-swagger-ui:${deps.springfoxVersion}"

@@ -29,19 +29,19 @@ import org.springframework.web.bind.annotation.RequestMethod;
 public class AppsController extends BaseController {
 
     @RequestMapping(method = RequestMethod.PUT, value = BlockChainConstants.ENDPOINT_APPS_VOTE)
-    public Result vote(@RequestBody final VoteInput params) throws Exception {
+    public Result vote(@RequestBody final VoteInput voteInput) throws Exception {
 
         //TODO: WorkAround Checkpoint2
-        Voter voter = params.getVoter();
+        Voter voter = voteInput.getVoter();
         if (StringUtils.isEmpty(voter.getName())) {
-            params.getVoter().setName("Name_" + System.currentTimeMillis());
+            voteInput.getVoter().setName("Name_" + System.currentTimeMillis());
         }
 
         if (StringUtils.isEmpty(voter.getSenderId())) {
-            params.getVoter().setSenderId("senderID_" + System.currentTimeMillis());
+            voteInput.getVoter().setSenderId("senderID_" + System.currentTimeMillis());
         }
 
-        Errors errors = ValidationHelper.validate(validator, params);
+        Errors errors = ValidationHelper.validate(validator, voteInput);
         if (errors.getErrorCount() > 0) {
             throw new BlockChainValidationException(errors);
         }
@@ -49,7 +49,7 @@ public class AppsController extends BaseController {
         String peerUri = bluemixUser.getPeer() + "/chaincode";
         log.info("Call Method invoke in " + bluemixUser.getPeer());
         final int randomId = (int) System.currentTimeMillis();
-        Init init = MessageHelper.prepareVoteMessage(getCodeChain(), params, bluemixUser.getEnrollId());
+        Init init = MessageHelper.prepareVoteMessage(getCodeChain(), voteInput, bluemixUser.getEnrollId());
         ResponseEntity<Init> response = restTemplate.postForEntity(peerUri, init, Init.class);
         response.getBody().getResult().setId(randomId);
         return response.getBody().getResult();
