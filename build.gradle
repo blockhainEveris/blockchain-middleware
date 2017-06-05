@@ -18,7 +18,7 @@ repositories {
         url 'https://steps.everis.com/nexus/content/groups/public/'
         credentials {
             username 'dperisro'
-            password 'Dp12012017'
+            password 'Pepito2017'
         }
     }
     maven { url 'https://repo.spring.io/release/' }
@@ -42,10 +42,14 @@ dependencies {
     compile 'org.springframework.boot:spring-boot-starter-actuator'
     compile 'org.springframework.boot:spring-boot-starter-web'
 
+    /* Elastic */
+    compile 'org.elasticsearch.client:transport:5.4.0'
+
     /* SWAGGER */
     compile "io.springfox:springfox-swagger-ui:${deps.springfoxVersion}"
     compile "io.springfox:springfox-swagger2:${deps.springfoxVersion}"
     compile "io.springfox:springfox-data-rest:${deps.springfoxVersion}"
+    compile "com.google.code.gson:gson:${deps.springfoxVersion}"
 
     /* Others */
     compile('org.apache.httpcomponents:httpclient:4.5.3')

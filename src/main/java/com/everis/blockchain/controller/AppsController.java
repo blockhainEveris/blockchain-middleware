@@ -33,12 +33,12 @@ public class AppsController extends BaseController {
 
         //TODO: WorkAround Checkpoint2
         Voter voter = params.getVoter();
-        if(StringUtils.isEmpty(voter.getName())){
-            params.getVoter().setName("Name_"+ System.currentTimeMillis());
+        if (StringUtils.isEmpty(voter.getName())) {
+            params.getVoter().setName("Name_" + System.currentTimeMillis());
         }
 
-        if(StringUtils.isEmpty(voter.getSenderId())){
-            params.getVoter().setSenderId("senderID_"+ System.currentTimeMillis());
+        if (StringUtils.isEmpty(voter.getSenderId())) {
+            params.getVoter().setSenderId("senderID_" + System.currentTimeMillis());
         }
 
         Errors errors = ValidationHelper.validate(validator, params);
@@ -95,6 +95,13 @@ public class AppsController extends BaseController {
         response.getBody().getResult().setMessage(null);
 
         return response.getBody().getResult();
+    }
+
+    @RequestMapping(method = RequestMethod.GET, value = "/elastic")
+    public VoteInput voteES(@RequestBody final VoteInput params) throws Exception {
+
+
+        return params;
 
     }
 
