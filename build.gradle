@@ -1,5 +1,5 @@
 plugins {
-    id 'org.springframework.boot' version '1.5.2.RELEASE'
+    id 'org.springframework.boot' version '1.5.3.RELEASE'
 }
 
 apply plugin: 'java'
@@ -53,19 +53,12 @@ dependencies {
 
     /* Others */
     compile('org.apache.httpcomponents:httpclient:4.5.3')
-
     compileOnly('org.projectlombok:lombok')
-
-    /* Spring Boot Admin*/
-    //compile group: 'de.codecentric', name: 'spring-boot-admin-starter-client', version: '1.4.6'
-    //compile group: 'de.codecentric', name: 'spring-boot-admin-server', version: '1.4.6'
-    //compile group: 'de.codecentric', name: 'spring-boot-admin-server-ui', version: '1.4.6'
 
     /* TESTING */
     testCompile('org.springframework.boot:spring-boot-starter-test')
     testCompile "io.rest-assured:rest-assured:${deps.restAssuredVersion}"
     testCompile "io.rest-assured:json-path:${deps.restAssuredVersion}"
     testCompile "io.rest-assured:json-schema-validator:${deps.restAssuredVersion}"
-
 
 }
