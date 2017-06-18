@@ -17,13 +17,11 @@ import org.springframework.stereotype.Component;
 
 import java.net.InetAddress;
 
-@EnableAsync
 @Component
 @Aspect
 @Slf4j
 public class ElasticAspect {
 
-    @Async
     @Before("execution(* com.everis.blockchain.controller.AppsController.*(..)) && args(voteInput,..)")
     public void elasticAspectVoting(final VoteInput voteInput) {
         try {
@@ -51,7 +49,7 @@ public class ElasticAspect {
         ObjectMapper mapper = new ObjectMapper();
         String jsonInString = mapper.writeValueAsString(voteInput);
 
-        IndexResponse response = client.prepareIndex("logstash-voting", "voting")
+        IndexResponse response = client.prepareIndex("logstash-" + voteInput.getVotingId(), "voting")
                 .setSource(jsonInString)
                 .execute()
                 .actionGet();
