@@ -24,11 +24,11 @@ public class FunctionalHelper {
         final VoteInput voteInput = new VoteInput();
         voteInput.setVotingId(votingId);
         voteInput.setJustification("AutomaticTest-" + random);
-        voteInput.setOptionId(new Random().nextInt(2) + 1);
+        voteInput.setOptionId(new Random().nextInt(3) + 1);
 
         Voter voter = new Voter();
         voter.setName("name_" + random);
-        voter.setSenderId("senderId_" + random);
+        voter.setSenderId(random + "");
         voter.setBoteId("boteId_" + random);
         voter.setConversationId("conversationId_" + random);
         voter.setChannel(getRandomChannel());

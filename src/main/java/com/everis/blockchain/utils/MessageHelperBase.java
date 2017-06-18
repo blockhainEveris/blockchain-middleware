@@ -32,7 +32,7 @@ public class MessageHelperBase {
 
     private static final String DEPLOY_METHOD = "deploy";
     private static final String DEPLOY_FUNCTION = "init";
-    private static final List<String> DEPLOY_ARGS = Arrays.asList("9091");
+    private static final List<String> DEPLOY_ARGS = Arrays.asList("90922");
 
     private static final String INVOKE_METHOD = "invoke";
     private static final String INVOKE_FUNCTION_ADDVOTING = "add_voting";

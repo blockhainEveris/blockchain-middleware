@@ -21,7 +21,7 @@ public class AddVotingInput {
     public static final int MAX_DESC = 255;
 
     public static final int MIN_MINUTES = 3;
-    public static final int MAX_MINUTES = 3600;
+    public static final int MAX_MINUTES = 3600*24;
 
     @NotNull
     @Size(min = MIN_DESC, max = MAX_DESC)

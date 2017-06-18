@@ -25,38 +25,31 @@ public class FunctionalBase {
     @BeforeClass
     public static void beforeClass() {
 
-        //RestAssured.proxy(BlockChainConstants.EVERIS_PROXY_HOST, BlockChainConstants.EVERIS_PROXY_PORT);
-        //RestAssured.port = Integer.valueOf(443);
-        //RestAssured.baseURI = "https://blockchain-middleware-everis.herokuapp.com/";
-
-        RestAssured.port = Integer.valueOf(8080);
-        RestAssured.baseURI = "http://127.0.0.1/";
+        RestAssured.port = Integer.valueOf(8081);
+        //RestAssured.baseURI = "http://34.209.32.187";
+        RestAssured.baseURI = "http://127.0.0.1";
 
         RestAssured.enableLoggingOfRequestAndResponseIfValidationFails();
         RestAssured.urlEncodingEnabled = false;
-    }
-
-    /**
-     * Default test.
-     */
-    @Test
-    public void defaultTest() {
-        assert (true);
     }
 
     @Test
     public void voting() throws Exception {
         info();
         login();
-        int votingId = addVoting();
-        log.info("votingId: " + votingId);
-        TimeUnit.SECONDS.sleep(10);
-        query(votingId);
+        //int votingId = addVoting();
+        //log.info("votingId: " + votingId);
+        //TimeUnit.SECONDS.sleep(10);
+        //query(votingId);
+
+        int votingId = 1115710324;
 
         for (int i = 0; i < 100; i++) {
             vote(votingId);
-            TimeUnit.SECONDS.sleep(1);
+            //TimeUnit.SECONDS.sleep(1);
         }
+
+        log.info("votingId:" + votingId);
 
     }
 
@@ -90,7 +83,8 @@ public class FunctionalBase {
         String prepareVoting = FunctionalHelper.prepareVoting(votingId);
         String path = BlockChainConstants.ENDPOINT_APPS + "vote";
         given().contentType(ContentType.JSON)
-                .accept(ContentType.JSON).body(prepareVoting).when().put(path).then().assertThat().statusCode(HTTPOK);
+                .accept(ContentType.JSON).body(prepareVoting).when().put(path);
+                //.then().assertThat().statusCode(HTTPOK);
     }
 
 

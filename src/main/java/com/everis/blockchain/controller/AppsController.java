@@ -23,13 +23,15 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
+import java.util.concurrent.TimeUnit;
+
 @MicroserviceController
 @RequestMapping(value = BlockChainConstants.ENDPOINT_APPS + "/*")
 @Slf4j
 public class AppsController extends BaseController {
 
     @RequestMapping(method = RequestMethod.PUT, value = BlockChainConstants.ENDPOINT_APPS_VOTE)
-    public Result vote(@RequestBody final VoteInput voteInput) throws Exception {
+    public synchronized Result vote(@RequestBody final VoteInput voteInput) throws Exception {
 
         //TODO: WorkAround Checkpoint2
         Voter voter = voteInput.getVoter();
@@ -50,6 +52,9 @@ public class AppsController extends BaseController {
         log.info("Call Method invoke in " + bluemixUser.getPeer());
         final int randomId = (int) System.currentTimeMillis();
         Init init = MessageHelper.prepareVoteMessage(getCodeChain(), voteInput, bluemixUser.getEnrollId());
+
+        TimeUnit.SECONDS.sleep(1);
+
         ResponseEntity<Init> response = restTemplate.postForEntity(peerUri, init, Init.class);
         response.getBody().getResult().setId(randomId);
         return response.getBody().getResult();

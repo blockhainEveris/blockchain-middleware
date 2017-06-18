@@ -3,9 +3,14 @@ package com.everis.blockchain;
 import com.everis.blockchain.bluemix.BluemixCredentials;
 import com.everis.blockchain.bluemix.BluemixData;
 import com.everis.blockchain.constants.BlockChainConstants;
+import com.everis.blockchain.message.voting.input.VoteInput;
 import com.everis.blockchain.utils.MessageHelper;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.extern.slf4j.Slf4j;
+import org.elasticsearch.client.transport.TransportClient;
+import org.elasticsearch.common.settings.Settings;
+import org.elasticsearch.common.transport.InetSocketTransportAddress;
+import org.elasticsearch.transport.client.PreBuiltTransportClient;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -18,6 +23,7 @@ import org.springframework.web.client.RestTemplate;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.net.InetAddress;
 import java.util.Properties;
 
 @Configuration
@@ -54,6 +60,15 @@ public class Application {
         factory.setConnectTimeout(TIMEOUT);
         restTemplate.setRequestFactory(factory);
         return restTemplate;
+    }
+
+    @Bean
+    public TransportClient transportClient() throws Exception {
+        Settings settings = Settings.builder().put("cluster.name", "docker-cluster").build();
+        TransportClient client = new PreBuiltTransportClient(settings)
+                .addTransportAddress(new InetSocketTransportAddress(InetAddress.getByName("34.209.32.187"), 9300));
+        log.info(client.settings().keySet().toString());
+        return client;
     }
 
     @Bean
