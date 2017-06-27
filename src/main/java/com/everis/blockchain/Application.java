@@ -3,7 +3,6 @@ package com.everis.blockchain;
 import com.everis.blockchain.bluemix.BluemixCredentials;
 import com.everis.blockchain.bluemix.BluemixData;
 import com.everis.blockchain.constants.BlockChainConstants;
-import com.everis.blockchain.message.voting.input.VoteInput;
 import com.everis.blockchain.utils.MessageHelper;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.extern.slf4j.Slf4j;
@@ -18,10 +17,8 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.client.HttpComponentsClientHttpRequestFactory;
-import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.client.RestTemplate;
 
-import java.io.IOException;
 import java.io.InputStream;
 import java.net.InetAddress;
 import java.util.Properties;
