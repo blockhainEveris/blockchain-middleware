@@ -102,13 +102,4 @@ public class AppsController extends BaseController {
         return response.getBody().getResult();
     }
 
-    @RequestMapping(method = RequestMethod.GET, value = "/elastic")
-    public VoteInput voteES(@RequestBody final VoteInput params) throws Exception {
-
-
-        return params;
-
-    }
-
-
 }
