@@ -26,8 +26,8 @@ public class FunctionalBase {
     public static void beforeClass() {
 
         RestAssured.port = Integer.valueOf(8081);
-        //RestAssured.baseURI = "http://34.209.32.187";
-        RestAssured.baseURI = "http://127.0.0.1";
+        RestAssured.baseURI = "http://34.209.32.187";
+        //RestAssured.baseURI = "http://127.0.0.1";
 
         RestAssured.enableLoggingOfRequestAndResponseIfValidationFails();
         RestAssured.urlEncodingEnabled = false;
@@ -42,9 +42,9 @@ public class FunctionalBase {
         //TimeUnit.SECONDS.sleep(10);
         //query(votingId);
 
-        int votingId = 1115710324;
+        int votingId = 1114554197;
 
-        for (int i = 0; i < 100; i++) {
+        for (int i = 0; i < 500; i++) {
             vote(votingId);
             //TimeUnit.SECONDS.sleep(1);
         }
