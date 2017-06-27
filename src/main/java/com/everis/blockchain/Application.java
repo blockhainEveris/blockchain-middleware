@@ -71,7 +71,7 @@ public class Application {
     @Bean
     public BluemixData blueMixCredentials() throws Exception {
         ObjectMapper mapper = new ObjectMapper();
-        InputStream is = Application.class.getResourceAsStream("/credentials.json");
+        InputStream is = Application.class.getResourceAsStream("/credentials-demo.json");
         return new BluemixData(mapper.readValue(is, BluemixCredentials.class));
     }
 
