@@ -35,7 +35,7 @@ public class Application {
     private static final int TIMEOUT = 60000;
 
     public static void main(final String[] args) {
-        setEverisProxy();
+        //setEverisProxy();
         SpringApplication.run(Application.class, args);
         log.info("ChainCode: " + MessageHelper.getChainCodeTmpFile());
     }
