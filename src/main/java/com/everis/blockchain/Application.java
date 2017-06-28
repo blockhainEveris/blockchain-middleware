@@ -19,6 +19,8 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.http.client.HttpComponentsClientHttpRequestFactory;
 import org.springframework.web.client.RestTemplate;
 
+import java.io.File;
+import java.io.FileInputStream;
 import java.io.InputStream;
 import java.net.InetAddress;
 import java.util.Properties;
@@ -33,7 +35,7 @@ public class Application {
     private static final int TIMEOUT = 60000;
 
     public static void main(final String[] args) {
-        //setEverisProxy();
+        setEverisProxy();
         SpringApplication.run(Application.class, args);
         log.info("ChainCode: " + MessageHelper.getChainCodeTmpFile());
     }
@@ -71,8 +73,17 @@ public class Application {
     @Bean
     public BluemixData blueMixCredentials() throws Exception {
         ObjectMapper mapper = new ObjectMapper();
-        InputStream is = Application.class.getResourceAsStream("/credentials-demo.json");
-        return new BluemixData(mapper.readValue(is, BluemixCredentials.class));
+        InputStream fis;
+        File file = new File("/tmp/credentials.json");
+        if (file.exists()) {
+            log.info("Get from file /tmp/credentials.json");
+            fis = new FileInputStream(file);
+        } else {
+            log.info("Get from classpath");
+            fis = Application.class.getResourceAsStream("/credentials.json");
+
+        }
+        return new BluemixData(mapper.readValue(fis, BluemixCredentials.class));
     }
 
 }
